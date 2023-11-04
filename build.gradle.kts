@@ -3,5 +3,21 @@
 plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.detekt) apply true
+}
+
+subprojects {
+    apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
+}
+
+allprojects {
+    detekt {
+        config.from("$rootDir/config/detekt/detekt.yml")
+    }
+    dependencies {
+        detektPlugins(rootProject.libs.detekt.rules.compose)
+    }
 }
 true // Needed to make the Suppress annotation work for the plugins block

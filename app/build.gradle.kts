@@ -33,6 +33,13 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+        create("staging") {
+            initWith(getByName("debug"))
+            isDebuggable = true
+            isMinifyEnabled = true
+            applicationIdSuffix = ".staging"
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
