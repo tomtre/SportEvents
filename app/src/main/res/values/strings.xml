@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SportEvents</string>
+    <string name="events">Events</string>
+    <string name="schedule">Schedule</string>
 </resources>
