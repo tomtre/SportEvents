@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EventItem(
+data class NetworkScheduleItem(
     @SerialName("date")
     val date: String,
     @SerialName("id")
@@ -14,7 +14,5 @@ data class EventItem(
     @SerialName("subtitle")
     val subtitle: String,
     @SerialName("title")
-    val title: String,
-    @SerialName("videoUrl")
-    val videoUrl: String
+    val title: String
 )
