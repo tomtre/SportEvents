@@ -50,4 +50,3 @@ fun NetworkHttpClient(): HttpClient = HttpClient(CIO) {
         requestTimeoutMillis = 5000L
     }
 }
-

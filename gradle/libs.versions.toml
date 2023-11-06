@@ -1,5 +1,8 @@
 [versions]
 agp = "8.1.2" # https://maven.google.com/web/index.html?q=com.android.tools.build#com.android.tools.build:gradle
+hilt = "2.47"
+hiltExt = "1.0.0"
+#hiltAndroidCompiler = "2.46"
 navigation-compose = "2.7.5"
 kotlin = "1.9.10" # https://github.com/JetBrains/kotlin/releases
 core-ktx = "1.12.0" # https://developer.android.com/jetpack/androidx/releases/core
@@ -20,6 +23,8 @@ timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 [libraries]
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
@@ -51,6 +56,7 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 [bundles]
 ktor = ["ktor-core", "ktor-cio", "ktor-logging", "ktor-auth", "ktor-negotiation", "ktor-serialization"]

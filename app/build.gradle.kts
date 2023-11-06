@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
 }
 
 android {
@@ -25,13 +27,13 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_URL", "https://us-central1-dazn-sandbox.cloudfunctions.net/")
+            buildConfigField("String", "API_URL", "\"https://us-central1-dazn-sandbox.cloudfunctions.net/\"")
             isDebuggable = true
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
         }
         release {
-            buildConfigField("String", "API_URL", "https://us-central1-dazn-sandbox.cloudfunctions.net/")
+            buildConfigField("String", "API_URL", "\"https://us-central1-dazn-sandbox.cloudfunctions.net/\"")
             isDebuggable = false
             isMinifyEnabled = true
             proguardFiles(
@@ -41,7 +43,7 @@ android {
         }
         create("staging") {
             initWith(getByName("debug"))
-            buildConfigField("String", "API_URL", "https://us-central1-dazn-sandbox.cloudfunctions.net/")
+            buildConfigField("String", "API_URL", "\"https://us-central1-dazn-sandbox.cloudfunctions.net/\"")
             isDebuggable = true
             isMinifyEnabled = true
             applicationIdSuffix = ".staging"
@@ -73,7 +75,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -87,6 +88,8 @@ dependencies {
     implementation(libs.arrow.core)
     implementation(libs.bundles.ktor)
     implementation(libs.timber)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -95,4 +98,9 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.detekt) apply true
+    alias(libs.plugins.hilt) apply false
 }
 
 subprojects {
