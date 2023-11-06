@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -24,21 +25,30 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField("String", "API_URL", "https://us-central1-dazn-sandbox.cloudfunctions.net/")
             isDebuggable = true
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
         }
         release {
+            buildConfigField("String", "API_URL", "https://us-central1-dazn-sandbox.cloudfunctions.net/")
             isDebuggable = false
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         create("staging") {
             initWith(getByName("debug"))
+            buildConfigField("String", "API_URL", "https://us-central1-dazn-sandbox.cloudfunctions.net/")
             isDebuggable = true
             isMinifyEnabled = true
             applicationIdSuffix = ".staging"
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -50,6 +60,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -72,6 +83,10 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.arrow.core)
+    implementation(libs.bundles.ktor)
+    implementation(libs.timber)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
