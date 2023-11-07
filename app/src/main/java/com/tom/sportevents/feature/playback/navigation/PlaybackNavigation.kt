@@ -10,8 +10,8 @@ import com.tom.sportevents.feature.playback.PlaybackRoute
 
 const val playbackNavigationRoute = "playback_route"
 
-fun NavController.navigateToPlayback(streamId: Int, navOptions: NavOptions? = null) {
-    // TODO handle streamId
+fun NavController.navigateToPlayback(streamUrl: String, navOptions: NavOptions? = null) {
+    // TODO handle streamUrl
     this.navigate(playbackNavigationRoute, navOptions)
 }
 

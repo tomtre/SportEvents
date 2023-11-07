@@ -10,7 +10,7 @@ import com.tom.sportevents.feature.schedule.navigation.scheduleScreen
 @Composable
 fun HomeNavHost(
     navController: NavHostController,
-    onNavigateToPlayback: (Int) -> Unit,
+    onNavigateToPlayback: (String) -> Unit,
     startDestination: String,
     modifier: Modifier = Modifier
 ) {

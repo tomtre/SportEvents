@@ -27,7 +27,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
     this.navigate(homeNavigationRoute, navOptions)
 }
 
-fun NavGraphBuilder.homeGraph(onNavigateToPlayback: (Int) -> Unit) {
+fun NavGraphBuilder.homeGraph(onNavigateToPlayback: (String) -> Unit) {
     composable(route = homeNavigationRoute) {
         val nestedNavController = rememberNavController()
         val currentDestination: NavDestination? = nestedNavController.currentBackStackEntryAsState().value?.destination

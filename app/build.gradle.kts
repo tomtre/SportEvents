@@ -90,6 +90,12 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.stateinmerge)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.lifecycle.runtimeCompose)
+    implementation(libs.lifecycle.viewModel)
+    implementation(libs.lifecycle.viewModelCompose)
+    implementation(libs.androidx.compose.material)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

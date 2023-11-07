@@ -15,7 +15,7 @@ fun RootNavHost(
     starDestination: String = homeNavigationRoute
 ) {
     NavHost(navController = navController, startDestination = starDestination) {
-        homeGraph(onNavigateToPlayback = { streamId -> navController.navigateToPlayback(streamId) })
+        homeGraph(onNavigateToPlayback = { streamUrl -> navController.navigateToPlayback(streamUrl) })
         playbackScreen()
     }
 }

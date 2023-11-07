@@ -2,4 +2,7 @@
     <string name="app_name">SportEvents</string>
     <string name="events">Events</string>
     <string name="schedule">Schedule</string>
+
+    <string name="error_network">An error occurred while fetching data</string>
+    <string name="refresh">Refresh</string>
 </resources>

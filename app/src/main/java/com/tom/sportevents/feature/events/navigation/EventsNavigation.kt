@@ -14,7 +14,7 @@ fun NavController.navigateToEvents(navOptions: NavOptions? = null) {
     this.navigate(eventsNavigationRoute, navOptions)
 }
 
-fun NavGraphBuilder.eventsScreen(onNavigateToPlayback: (Int) -> Unit) {
+fun NavGraphBuilder.eventsScreen(onNavigateToPlayback: (String) -> Unit) {
     composable(route = eventsNavigationRoute) {
         EventsRoute(onNavigateToPlayback = onNavigateToPlayback)
     }

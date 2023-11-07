@@ -14,7 +14,7 @@ fun NavController.navigateToSchedule(navOptions: NavOptions? = null) {
     this.navigate(scheduleNavigationRoute, navOptions)
 }
 
-fun NavGraphBuilder.scheduleScreen(onNavigateToPlayback: (Int) -> Unit) {
+fun NavGraphBuilder.scheduleScreen(onNavigateToPlayback: (String) -> Unit) {
     composable(route = scheduleNavigationRoute) {
         ScheduleRoute(onNavigateToPlayback = onNavigateToPlayback)
     }
