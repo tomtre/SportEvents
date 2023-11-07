@@ -4,19 +4,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tom.sportevents.core.model.EventItem
+import com.tom.sportevents.core.model.FormattedEventItem
 import com.tom.sportevents.feature.common.ui.ListItem
 
 @Composable
 fun EventListItem(
-    eventItem: EventItem,
+    eventItem: FormattedEventItem,
     onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ListItem(
         title = eventItem.title,
         subtitle = eventItem.subtitle,
-        date = eventItem.date,
+        date = eventItem.formattedDate,
         imageUrl = eventItem.imageUrl,
         modifier = modifier.clickable { onItemClick(eventItem.videoUrl) }
 
@@ -26,11 +26,11 @@ fun EventListItem(
 @Preview
 @Composable
 private fun PreviewEventItem() {
-    val eventItem = EventItem(
+    val eventItem = FormattedEventItem(
         id = "1",
         title = "Hamburger vs Magdeburg",
         subtitle = "Champions League",
-        date = "Yesterday",
+        formattedDate = "Yesterday",
         imageUrl = "imgUrl",
         videoUrl = "videoUrl"
     )

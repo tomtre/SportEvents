@@ -19,13 +19,13 @@ arrow = "1.1.5" # https://github.com/arrow-kt/arrow/releases
 ktor = "2.3.4" # https://github.com/ktorio/ktor/releases
 stateInMerge = "1.1.0"
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
+desugar_jdk_libs = "2.0.4"
 
 [libraries]
 lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
-
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
@@ -56,6 +56,7 @@ ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation"
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

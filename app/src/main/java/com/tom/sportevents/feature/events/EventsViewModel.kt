@@ -3,39 +3,49 @@ package com.tom.sportevents.feature.events
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tom.sportevents.R
-import com.tom.sportevents.core.domain.GetEventsUseCase
+import com.tom.sportevents.core.domain.ObserveEventsUseCase
 import com.tom.sportevents.core.model.Result
+import com.tomczyn.coroutines.Launched
+import com.tomczyn.coroutines.stateInMerge
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class EventsViewModel @Inject constructor(private val getEventsUseCase: GetEventsUseCase) : ViewModel() {
+class EventsViewModel @Inject constructor(private val observeEventsUseCase: ObserveEventsUseCase) : ViewModel() {
 
+    private val refreshEvents = MutableStateFlow(Unit)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val _state: MutableStateFlow<EventsState> = MutableStateFlow(EventsState())
-
-    init {
-        viewModelScope.launch {
-            loadData()
-        }
-    }
+        .stateInMerge(
+            scope = viewModelScope,
+            launched = Launched.WhileSubscribed(5000),
+            {
+                refreshEvents.flatMapLatest {
+                    observeEventsUseCase()
+                        .onEachToState { state, result ->
+                            Timber.d("XXX", "result: $result")
+                            when (result) {
+                                is Result.Success -> state.copy(isLoading = false, error = null, items = result.data)
+                                is Result.Error -> state.copy(isLoading = false, error = R.string.error_network, items = emptyList())
+                            }
+                        }
+                }
+            }
+        )
 
     val state = _state.asStateFlow()
 
     fun refresh() {
         viewModelScope.launch {
-            loadData()
-        }
-    }
-
-    private suspend fun loadData() {
-        _state.update { it.copy(isLoading = true, error = null) }
-        when (val result = getEventsUseCase()) {
-            is Result.Success -> _state.update { it.copy(isLoading = false, error = null, items = result.data) }
-            is Result.Error -> _state.update { it.copy(isLoading = false, error = R.string.error_network, items = emptyList()) }
+            refreshEvents.emit(Unit)
         }
     }
 

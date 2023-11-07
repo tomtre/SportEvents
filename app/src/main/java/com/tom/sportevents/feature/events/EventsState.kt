@@ -1,11 +1,11 @@
 package com.tom.sportevents.feature.events
 
 import androidx.annotation.StringRes
-import com.tom.sportevents.core.model.EventItem
+import com.tom.sportevents.core.model.FormattedEventItem
 
 data class EventsState(
     val isLoading: Boolean = true,
     @StringRes val error: Int? = null,
-    val items: List<EventItem> = emptyList(),
+    val items: List<FormattedEventItem> = emptyList(),
     val navigateToPlayback: String? = null
 )

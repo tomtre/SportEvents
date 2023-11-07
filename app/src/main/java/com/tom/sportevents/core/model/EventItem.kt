@@ -1,20 +1,21 @@
 package com.tom.sportevents.core.model
 
+import com.tom.sportevents.core.common.time.DateParser
 import com.tom.sportevents.core.network.model.NetworkEventItem
+import java.time.Instant
 
 class EventItem(
     val id: String,
     val title: String,
     val subtitle: String,
-    val date: String,
+    val date: Instant,
     val imageUrl: String,
     val videoUrl: String
 )
 
-// TODO add date mappings
-fun NetworkEventItem.toDomain(): EventItem =
+fun NetworkEventItem.toDomain(dateParser: DateParser): EventItem =
     EventItem(
-        date = date,
+        date = dateParser.parseFromIsoInstantFormat(date),
         id = id,
         imageUrl = imageUrl,
         subtitle = subtitle,
@@ -22,5 +23,5 @@ fun NetworkEventItem.toDomain(): EventItem =
         videoUrl = videoUrl
     )
 
-fun List<NetworkEventItem>.toDomain(): List<EventItem> =
-    map { it.toDomain() }
+fun List<NetworkEventItem>.toDomain(dateParser: DateParser): List<EventItem> =
+    map { it.toDomain(dateParser) }

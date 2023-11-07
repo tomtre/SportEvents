@@ -56,6 +56,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -96,6 +97,8 @@ dependencies {
     implementation(libs.lifecycle.viewModel)
     implementation(libs.lifecycle.viewModelCompose)
     implementation(libs.androidx.compose.material)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
