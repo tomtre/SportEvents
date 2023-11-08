@@ -5,7 +5,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tom.sportevents.feature.common.ui.PullRefreshLazyList
@@ -38,7 +37,7 @@ private fun ScheduleScreen(
     ) {
         items(uiState.items, key = { it.id }) { eventItem ->
             ScheduleListItem(scheduleItem = eventItem)
-            Divider(color = Color.Green)
+            Divider()
         }
     }
 }

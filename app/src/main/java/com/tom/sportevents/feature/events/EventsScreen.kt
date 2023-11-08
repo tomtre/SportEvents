@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tom.sportevents.feature.common.ui.PullRefreshLazyList
@@ -49,7 +48,7 @@ private fun EventsScreen(
     ) {
         items(uiState.items, key = { it.id }) { eventItem ->
             EventListItem(eventItem = eventItem, onItemClick = onListItemClick)
-            Divider(color = Color.Green)
+            Divider()
         }
     }
 }

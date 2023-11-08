@@ -97,6 +97,8 @@ dependencies {
     implementation(libs.lifecycle.viewModel)
     implementation(libs.lifecycle.viewModelCompose)
     implementation(libs.androidx.compose.material)
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

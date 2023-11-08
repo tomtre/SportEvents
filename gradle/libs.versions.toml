@@ -20,8 +20,11 @@ ktor = "2.3.4" # https://github.com/ktorio/ktor/releases
 stateInMerge = "1.1.0"
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 desugar_jdk_libs = "2.0.4"
+coil = "2.2.2"
 
 [libraries]
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
