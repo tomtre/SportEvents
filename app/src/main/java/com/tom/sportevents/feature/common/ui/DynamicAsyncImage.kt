@@ -53,7 +53,7 @@ fun DynamicAsyncImage(
             )
         }
         Image(
-            contentScale = ContentScale.FillHeight,
+            contentScale = ContentScale.Crop,
             painter = if (isError.not() && !isLocalInspection) imageLoader else placeholder,
             contentDescription = contentDescription,
         )

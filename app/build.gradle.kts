@@ -99,6 +99,8 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

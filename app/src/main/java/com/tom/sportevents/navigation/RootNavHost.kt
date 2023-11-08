@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.tom.sportevents.feature.playback.navigation.PlaybackArgs
 import com.tom.sportevents.feature.playback.navigation.navigateToPlayback
 import com.tom.sportevents.feature.playback.navigation.playbackScreen
 import com.tom.sportevents.navigation.home.homeGraph
@@ -15,7 +16,7 @@ fun RootNavHost(
     starDestination: String = homeNavigationRoute
 ) {
     NavHost(navController = navController, startDestination = starDestination) {
-        homeGraph(onNavigateToPlayback = { streamUrl -> navController.navigateToPlayback(streamUrl) })
+        homeGraph(onNavigateToPlayback = { streamUrl -> navController.navigateToPlayback(PlaybackArgs(streamUrl)) })
         playbackScreen()
     }
 }

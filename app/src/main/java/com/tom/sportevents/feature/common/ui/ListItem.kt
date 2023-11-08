@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 fun ListItem(title: String, subtitle: String, date: String, imageUrl: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
+            .padding(top = 5.dp, bottom = 5.dp)
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
     ) {
