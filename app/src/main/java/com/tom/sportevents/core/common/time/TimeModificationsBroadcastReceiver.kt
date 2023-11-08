@@ -13,21 +13,25 @@ class TimeModificationsBroadcastReceiver @Inject constructor(
 
     private var registered = false
 
-    private var onTimeSettingsChanged: (() -> Unit)? = null
+    private var timeZoneChangedListener: (() -> Unit)? = null
+    private var localAndTimeSetChangedListener: (() -> Unit)? = null
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent == null) return
-        if (intent.action == Intent.ACTION_TIMEZONE_CHANGED ||
-            intent.action == Intent.ACTION_LOCALE_CHANGED ||
+        if (intent.action == Intent.ACTION_TIMEZONE_CHANGED) {
+            timeZoneChangedListener?.let { it() }
+        }
+        if (intent.action == Intent.ACTION_LOCALE_CHANGED ||
             intent.action == "android.intent.action.TIME_SET"
         ) {
-            onTimeSettingsChanged?.let { it() }
+            localAndTimeSetChangedListener?.let { it() }
         }
     }
 
-    fun register(setOnTimeSettingsChanged: () -> Unit) {
+    fun register(onTimeZoneChanged: () -> Unit, onLocalAndTimeSetChanged: () -> Unit) {
         if (!registered) {
-            onTimeSettingsChanged = setOnTimeSettingsChanged
+            timeZoneChangedListener = onTimeZoneChanged
+            localAndTimeSetChangedListener = onLocalAndTimeSetChanged
             val filter = IntentFilter()
             filter.addAction(Intent.ACTION_TIMEZONE_CHANGED)
             filter.addAction(Intent.ACTION_LOCALE_CHANGED)
@@ -39,7 +43,8 @@ class TimeModificationsBroadcastReceiver @Inject constructor(
 
     fun unregister() {
         if (registered) {
-            onTimeSettingsChanged = null
+            timeZoneChangedListener = null
+            localAndTimeSetChangedListener = null
             context.unregisterReceiver(this)
             registered = false
         }

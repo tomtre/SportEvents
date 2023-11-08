@@ -25,7 +25,7 @@ fun EventListItem(
 
 @Preview
 @Composable
-private fun PreviewEventItem() {
+private fun PreviewEventListItem() {
     val eventItem = FormattedEventItem(
         id = "1",
         title = "Hamburger vs Magdeburg",

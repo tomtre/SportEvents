@@ -20,6 +20,6 @@ fun HomeNavHost(
         modifier = modifier
     ) {
         eventsScreen(onNavigateToPlayback = onNavigateToPlayback)
-        scheduleScreen(onNavigateToPlayback = onNavigateToPlayback)
+        scheduleScreen()
     }
 }

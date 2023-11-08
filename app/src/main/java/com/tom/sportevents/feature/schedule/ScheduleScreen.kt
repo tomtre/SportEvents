@@ -1,38 +1,44 @@
 package com.tom.sportevents.feature.schedule
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tom.sportevents.feature.common.ui.PullRefreshLazyList
 
 @Composable
 internal fun ScheduleRoute(
-    onNavigateToPlayback: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ScheduleViewModel = hiltViewModel()
 ) {
-    // collect state here
-    ScheduleScreen(onNavigateToPlayback, modifier = modifier)
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    ScheduleScreen(
+        uiState = uiState,
+        onRefresh = viewModel::refresh,
+        modifier = modifier
+    )
 }
 
 @Composable
 private fun ScheduleScreen(
-    onListItemClick: (String) -> Unit,
+    uiState: ScheduleState,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+
+    PullRefreshLazyList(
+        isLoading = uiState.isLoading,
+        error = uiState.error,
+        onRefresh = onRefresh,
+        modifier = modifier
     ) {
-        Text("Schedule screen")
-        Spacer(modifier = Modifier.size(20.dp))
-        Button(onClick = { onListItemClick("") }) {
-            Text(text = "Navigate to Playback screen")
+        items(uiState.items, key = { it.id }) { eventItem ->
+            ScheduleListItem(scheduleItem = eventItem)
+            Divider(color = Color.Green)
         }
     }
 }

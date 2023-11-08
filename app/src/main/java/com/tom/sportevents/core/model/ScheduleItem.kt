@@ -1,6 +1,6 @@
 package com.tom.sportevents.core.model
 
-import com.tom.sportevents.core.common.time.DateParser
+import com.tom.sportevents.core.common.time.AtomicTimeManager
 import com.tom.sportevents.core.network.model.NetworkScheduleItem
 import java.time.Instant
 
@@ -12,14 +12,14 @@ data class ScheduleItem(
     val imageUrl: String
 )
 
-fun NetworkScheduleItem.toDomain(dateParser: DateParser): ScheduleItem =
+fun NetworkScheduleItem.toDomain(timeManager: AtomicTimeManager): ScheduleItem =
     ScheduleItem(
-        date = dateParser.parseFromIsoInstantFormat(date),
+        date = timeManager.parseFromIsoInstantFormat(date),
         id = id,
         imageUrl = imageUrl,
         subtitle = subtitle,
         title = title
     )
 
-fun List<NetworkScheduleItem>.toDomain(dateParser: DateParser): List<ScheduleItem> =
-    map { it.toDomain(dateParser) }
+fun List<NetworkScheduleItem>.toDomain(timeManager: AtomicTimeManager): List<ScheduleItem> =
+    map { it.toDomain(timeManager) }
