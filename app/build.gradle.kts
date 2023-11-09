@@ -113,8 +113,6 @@ dependencies {
     testImplementation(libs.kluent)
     testImplementation(libs.kluent.android)
     testImplementation(libs.mockk)
-
-
 }
 
 kapt {

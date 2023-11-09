@@ -11,6 +11,7 @@ The app doesn't use pagination as the API does not support it (or at least it is
 - Compose + Coil
 - Hilt/Dagger for DI
 - ExoPlayer for video
+- Ktlint and detekt
 
 ### Event screen
 The events screen fetches data once, but the model is recalculated every one minute or when the user sets new time-zone or phone time. We show relative dates (“yesterday”, “tomorrow” etc) to show the time of the event, so we need a mechanism to constantly refresh the view model.
