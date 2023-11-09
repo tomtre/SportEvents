@@ -27,7 +27,7 @@ fun DynamicAsyncImage(
     imageUrl: String,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    placeholder: Painter = painterResource(R.drawable.ic_placeholder_default),
+    placeholder: Painter = painterResource(R.drawable.ic_placeholder_default)
 ) {
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
@@ -36,12 +36,12 @@ fun DynamicAsyncImage(
         onState = { state ->
             isLoading = state is Loading
             isError = state is Error
-        },
+        }
     )
     val isLocalInspection = LocalInspectionMode.current
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         if (isLoading && !isLocalInspection) {
             // Display a progress bar while loading
@@ -49,13 +49,13 @@ fun DynamicAsyncImage(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .size(80.dp),
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.tertiary
             )
         }
         Image(
             contentScale = ContentScale.Crop,
             painter = if (isError.not() && !isLocalInspection) imageLoader else placeholder,
-            contentDescription = contentDescription,
+            contentDescription = contentDescription
         )
     }
 }

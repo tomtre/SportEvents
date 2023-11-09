@@ -1,6 +1,6 @@
 package com.tom.sportevents.core.domain
 
-import com.tom.sportevents.core.common.time.AtomicTimeManager
+import com.tom.sportevents.core.common.time.TimeManager
 import com.tom.sportevents.core.data.repository.ScheduleRepository
 import com.tom.sportevents.core.model.FormattedScheduleItem
 import com.tom.sportevents.core.model.Result
@@ -8,6 +8,7 @@ import com.tom.sportevents.core.model.ScheduleItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import java.time.LocalTime
@@ -16,7 +17,7 @@ import kotlin.coroutines.coroutineContext
 
 class ObserveScheduleUseCase @Inject constructor(
     private val scheduleRepository: ScheduleRepository,
-    private val timeManager: AtomicTimeManager
+    private val timeManager: TimeManager
 ) : () -> Flow<Result<List<FormattedScheduleItem>>> {
 
     override fun invoke(): Flow<Result<List<FormattedScheduleItem>>> {
@@ -47,6 +48,7 @@ class ObserveScheduleUseCase @Inject constructor(
                 delay(REFRESH_API_REQUEST_DELAY_MILLIS)
             }
         }
+            .distinctUntilChanged()
     }
 
     private fun sortAndFormat(result: Result<List<ScheduleItem>>) =
@@ -62,7 +64,7 @@ class ObserveScheduleUseCase @Inject constructor(
             is Result.Error -> result
         }
 
-    private fun List<ScheduleItem>.filterTomorrow(timeManager: AtomicTimeManager): List<ScheduleItem> {
+    private fun List<ScheduleItem>.filterTomorrow(timeManager: TimeManager): List<ScheduleItem> {
         val tomorrowZoned = timeManager.currentZonedDateTime().plusDays(1)
         val tomorrowStarInstant = tomorrowZoned.with(LocalTime.MIN).toInstant()
         val tomorrowEndInstant = tomorrowZoned.with(LocalTime.MAX).toInstant()
@@ -70,7 +72,7 @@ class ObserveScheduleUseCase @Inject constructor(
 /*
             We can't use isAfter and isBefore because time intervals should be half-open:
             https://wrschneider.github.io/2014/01/07/time-intervals-and-other-ranges-should.html
-            val dateZoned = atomicTimeManager.convertToZonedDateTime(it.date)
+            val dateZoned = timeManager.convertToZonedDateTime(it.date)
             dateZoned.isAfter(tomorrowStartZoned) && dateZoned.isBefore(tomorrowEndZoned)
 */
             val dateEpochMilli = it.date.toEpochMilli()
@@ -78,18 +80,16 @@ class ObserveScheduleUseCase @Inject constructor(
         }
     }
 
-    private fun ScheduleItem.toFormattedScheduleItem(timeManager: AtomicTimeManager): FormattedScheduleItem =
+    private fun ScheduleItem.toFormattedScheduleItem(timeManager: TimeManager): FormattedScheduleItem =
         FormattedScheduleItem(
             id = id,
             title = title,
             subtitle = subtitle,
             formattedDate = timeManager.formatRelativeDays(date),
-            imageUrl = imageUrl,
+            imageUrl = imageUrl
         )
 
     companion object {
         private const val REFRESH_API_REQUEST_DELAY_MILLIS = 30_000L
     }
 }
-
-

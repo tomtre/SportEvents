@@ -54,6 +54,7 @@ private fun PlaybackScreen(
             }
         }
 
+        @Suppress("MagicNumber")
         AndroidView(
             factory = { context ->
                 PlayerView(context).apply {
@@ -75,6 +76,5 @@ private fun PlaybackScreen(
                 .fillMaxWidth()
                 .aspectRatio(16 / 9f)
         )
-
     }
 }

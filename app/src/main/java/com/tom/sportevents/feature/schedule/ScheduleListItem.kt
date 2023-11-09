@@ -29,7 +29,7 @@ private fun PreviewScheduleListItem() {
         title = "Hamburger vs Magdeburg",
         subtitle = "Champions League",
         formattedDate = "Yesterday",
-        imageUrl = "imgUrl",
+        imageUrl = "imgUrl"
     )
     ScheduleListItem(scheduleItem = scheduleItem)
 }

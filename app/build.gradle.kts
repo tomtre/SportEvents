@@ -104,13 +104,25 @@ dependencies {
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
+    testImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    testImplementation(libs.androidx.test.rules)
+    testImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.hilt.android.testing)
+    testImplementation(libs.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kluent)
+    testImplementation(libs.kluent.android)
+    testImplementation(libs.mockk)
+
+//    androidTestImplementation(libs.androidx.test.ext.junit)
+//    androidTestImplementation(libs.espresso.core)
+//    androidTestImplementation(platform(libs.compose.bom))
+//    androidTestImplementation(libs.ui.test.junit4)
+//    debugImplementation(libs.ui.tooling)
+//    debugImplementation(libs.ui.test.manifest)
 }
 
 // Allow references to generated code

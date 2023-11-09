@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.tom.sportevents.R
 
 @OptIn(ExperimentalMaterialApi::class)
+@Suppress("ModifierParameterPosition", "ComposableParametersOrdering")
 @Composable
 fun PullRefreshLazyList(
     isLoading: Boolean,

@@ -13,6 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,6 +43,7 @@ class ScheduleViewModel @Inject constructor(private val observeScheduleUseCase: 
     val state = _state.asStateFlow()
 
     fun refresh() {
+        _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             refreshSchedule.emit(Unit)
         }

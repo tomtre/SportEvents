@@ -1,6 +1,6 @@
 package com.tom.sportevents.core.domain
 
-import com.tom.sportevents.core.common.time.AtomicTimeManager
+import com.tom.sportevents.core.common.time.TimeManager
 import com.tom.sportevents.core.data.repository.EventsRepository
 import com.tom.sportevents.core.model.EventItem
 import com.tom.sportevents.core.model.FormattedEventItem
@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.isActive
@@ -17,7 +18,7 @@ import kotlin.coroutines.coroutineContext
 
 class ObserveEventsUseCase @Inject constructor(
     private val eventsRepository: EventsRepository,
-    private val timeManager: AtomicTimeManager
+    private val timeManager: TimeManager
 ) : () -> Flow<Result<List<FormattedEventItem>>> {
 
     override fun invoke(): Flow<Result<List<FormattedEventItem>>> {
@@ -38,9 +39,10 @@ class ObserveEventsUseCase @Inject constructor(
                     is Result.Error -> result
                 }
             }
+            .distinctUntilChanged()
     }
 
-    private fun EventItem.toFormattedEventItem(timeManager: AtomicTimeManager): FormattedEventItem =
+    private fun EventItem.toFormattedEventItem(timeManager: TimeManager): FormattedEventItem =
         FormattedEventItem(
             id = id,
             title = title,

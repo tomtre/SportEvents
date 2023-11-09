@@ -1,6 +1,6 @@
 package com.tom.sportevents.core.data.repository
 
-import com.tom.sportevents.core.common.time.AtomicTimeManager
+import com.tom.sportevents.core.common.time.TimeManager
 import com.tom.sportevents.core.model.Result
 import com.tom.sportevents.core.model.ScheduleItem
 import com.tom.sportevents.core.model.toDomain
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class ScheduleRepository @Inject constructor(
     private val networkDataSource: NetworkDataSource,
-    private val atomicTimeManager: AtomicTimeManager
+    private val timeManager: TimeManager
 ) {
 
     suspend fun getSchedule(): Result<List<ScheduleItem>> =
@@ -21,7 +21,7 @@ class ScheduleRepository @Inject constructor(
                 { Result.Error() },
                 {
                     try {
-                        Result.Success(it.toDomain(atomicTimeManager))
+                        Result.Success(it.toDomain(timeManager))
                     } catch (e: DateTimeParseException) {
                         Result.Error(e)
                     }

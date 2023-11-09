@@ -23,7 +23,7 @@ class EventsViewModel @Inject constructor(private val observeEventsUseCase: Obse
     private val refreshEvents = MutableBehaviorFlow(Unit)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val _state: MutableStateFlow<EventsState> = MutableStateFlow(EventsState(isLoading = false))
+    private val _state: MutableStateFlow<EventsState> = MutableStateFlow(EventsState(isLoading = true))
         .stateInMerge(
             scope = viewModelScope,
             launched = Launched.WhileSubscribed(5000),
@@ -43,6 +43,7 @@ class EventsViewModel @Inject constructor(private val observeEventsUseCase: Obse
     val state = _state.asStateFlow()
 
     fun refresh() {
+        _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             refreshEvents.emit(Unit)
         }

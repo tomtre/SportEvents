@@ -3,11 +3,9 @@ package com.tom.sportevents.core.common.time
 import android.content.Context
 import android.text.format.DateUtils
 import com.tom.sportevents.core.common.BehaviorFlow
+import com.tom.sportevents.core.common.CoroutineScopeProvider
 import com.tom.sportevents.core.common.MutableBehaviorFlow
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
@@ -20,18 +18,18 @@ import java.util.Locale
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@Suppress("TooManyFunctions")
 class AtomicTimeManager @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val coroutineScopeProvider: CoroutineScopeProvider,
     timeModificationsBroadcastReceiver: TimeModificationsBroadcastReceiver
-) {
+) : TimeManager {
+
     private val _timeConfigurationChanged = MutableBehaviorFlow(Unit)
-    val timeConfigurationChanged: BehaviorFlow<Unit> = _timeConfigurationChanged
+    override val timeConfigurationChanged: BehaviorFlow<Unit> = _timeConfigurationChanged
 
     private val readWriteLock: ReadWriteLock = ReentrantReadWriteLock()
-    private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
 
     @Volatile
     private var shortDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
@@ -50,18 +48,17 @@ class AtomicTimeManager @Inject constructor(
             onLocalAndTimeSetChanged = {
                 setLocale(Locale.getDefault())
                 broadcastTimeConfigurationChanged()
-            },
+            }
         )
     }
 
     private fun broadcastTimeConfigurationChanged() {
-        coroutineScope.launch {
+        coroutineScopeProvider.applicationScope.launch {
             _timeConfigurationChanged.emit(Unit)
         }
     }
 
-    @JvmName("formatInstant")
-    fun format(instant: Instant): String {
+    override fun formatInstant(instant: Instant): String {
         readWriteLock.readLock().lock()
         try {
             return shortDateTimeFormatter.format(instant)
@@ -70,8 +67,7 @@ class AtomicTimeManager @Inject constructor(
         }
     }
 
-    @JvmName("formatLocalDate")
-    fun format(localDate: LocalDate): String {
+    override fun formatLocalDate(localDate: LocalDate): String {
         readWriteLock.readLock().lock()
         try {
             return shortDateTimeFormatter.format(localDate)
@@ -80,8 +76,7 @@ class AtomicTimeManager @Inject constructor(
         }
     }
 
-    @JvmName("formatLocalDateList")
-    fun format(localDates: List<LocalDate>): List<String> {
+    override fun formatLocalDateList(localDates: List<LocalDate>): List<String> {
         readWriteLock.readLock().lock()
         try {
             return localDates.map { shortDateTimeFormatter.format(it) }
@@ -90,8 +85,7 @@ class AtomicTimeManager @Inject constructor(
         }
     }
 
-    @JvmName("formatLocalDateTime")
-    fun format(localDateTime: LocalDateTime): String {
+    override fun formatLocalDateTime(localDateTime: LocalDateTime): String {
         readWriteLock.readLock().lock()
         try {
             return shortDateTimeFormatter.format(localDateTime)
@@ -100,8 +94,7 @@ class AtomicTimeManager @Inject constructor(
         }
     }
 
-    @JvmName("formatLocalDateTimeList")
-    fun format(localDateTimeList: List<LocalDateTime>): List<String> {
+    override fun formatLocalDateTimeList(localDateTimeList: List<LocalDateTime>): List<String> {
         readWriteLock.readLock().lock()
         try {
             return localDateTimeList.map { shortDateTimeFormatter.format(it) }
@@ -110,7 +103,7 @@ class AtomicTimeManager @Inject constructor(
         }
     }
 
-    fun formatRelativeDays(instant: Instant): String {
+    override fun formatRelativeDays(instant: Instant): String {
         return DateUtils
             .getRelativeDateTimeString(
                 /* c = */ context,
@@ -122,13 +115,13 @@ class AtomicTimeManager @Inject constructor(
             .toString()
     }
 
-    fun parseFromIsoInstantFormat(input: String): Instant =
+    override fun parseFromIsoInstantFormat(input: String): Instant =
         Instant.from(isoInstantDateTimeFormatter.parse(input))
 
-    fun currentZonedDateTime(): ZonedDateTime =
+    override fun currentZonedDateTime(): ZonedDateTime =
         ZonedDateTime.now()
 
-    fun convertToZonedDateTime(instant: Instant): ZonedDateTime =
+    override fun convertToZonedDateTime(instant: Instant): ZonedDateTime =
         instant.atZone(ZoneId.systemDefault())
 
     // BroadcastReceiver -> Intent android.intent.action.TIMEZONE_CHANGED

@@ -28,7 +28,6 @@ private fun ScheduleScreen(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     PullRefreshLazyList(
         isLoading = uiState.isLoading,
         error = uiState.error,
