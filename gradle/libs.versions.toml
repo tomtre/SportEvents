@@ -1,88 +1,86 @@
 [versions]
+activity-compose = "1.8.0" # https://developer.android.com/jetpack/androidx/releases/activity
 agp = "8.1.2" # https://maven.google.com/web/index.html?q=com.android.tools.build#com.android.tools.build:gradle
+androidx-test-ext-junit = "1.1.5" # https://maven.google.com/web/index.html?q=junit-ktx#androidx.test.ext:junit-ktx
+androidxEspresso = "3.5.1"
+androidxLifecycle = "2.6.2" # https://developer.android.com/jetpack/androidx/releases/lifecycle
+androidxTestCore = "1.5.0"
+androidxTestRules = "1.5.0"
+androidxTestRunner = "1.5.2"
+arrow = "1.1.5" # https://github.com/arrow-kt/arrow/releases
+coil = "2.2.2"
+compose-bom = "2023.10.01" # https://maven.google.com/web/index.html?q=compose-bom#androidx.compose:compose-bom
+core-ktx = "1.12.0" # https://developer.android.com/jetpack/androidx/releases/core
+desugar_jdk_libs = "2.0.4"
+detekt = "1.23.3" # https://github.com/detekt/detekt/releases
+detektRulesCompose = "1.3.0" # https://github.com/appKODE/detekt-rules-compose
+espresso-core = "3.5.1" # https://maven.google.com/web/index.html?q=espresso-core#androidx.test.espresso:espresso-core
 hilt = "2.48"
 hiltNavigationCompose = "1.1.0"
-kluent = "1.72"
+junit4 = "4.13.2" # https://github.com/junit-team/junit4/releases
+kluent = "1.73"
+kotlin = "1.9.10" # https://github.com/JetBrains/kotlin/releases
+kotlinxCoroutines = "1.7.3"
+kotlinxSerializationJson = "1.6.0" # https://github.com/Kotlin/kotlinx.serialization/releases
+ktlint = "11.6.1" # https://github.com/JLLeitschuh/ktlint-gradle/releases
+ktor = "2.3.4" # https://github.com/ktorio/ktor/releases
 media3 = "1.1.1"
 mockk = "1.13.8"
 navigation-compose = "2.7.5"
-kotlin = "1.9.10" # https://github.com/JetBrains/kotlin/releases
-core-ktx = "1.12.0" # https://developer.android.com/jetpack/androidx/releases/core
-junit4 = "4.13.2" # https://github.com/junit-team/junit4/releases
-androidx-test-ext-junit = "1.1.5" # https://maven.google.com/web/index.html?q=junit-ktx#androidx.test.ext:junit-ktx
-espresso-core = "3.5.1" # https://maven.google.com/web/index.html?q=espresso-core#androidx.test.espresso:espresso-core
-androidxLifecycle = "2.6.2" # https://developer.android.com/jetpack/androidx/releases/lifecycle
-activity-compose = "1.8.0" # https://developer.android.com/jetpack/androidx/releases/activity
-compose-bom = "2023.10.01" # https://maven.google.com/web/index.html?q=compose-bom#androidx.compose:compose-bom
-ktlint = "11.6.1" # https://github.com/JLLeitschuh/ktlint-gradle/releases
-detekt = "1.23.3" # https://github.com/detekt/detekt/releases
-detektRulesCompose = "1.3.0" # https://github.com/appKODE/detekt-rules-compose
-kotlinxSerializationJson = "1.6.0" # https://github.com/Kotlin/kotlinx.serialization/releases
-arrow = "1.1.5" # https://github.com/arrow-kt/arrow/releases
-ktor = "2.3.4" # https://github.com/ktorio/ktor/releases
 stateInMerge = "1.1.0"
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
-desugar_jdk_libs = "2.0.4"
-coil = "2.2.2"
-kotlinxCoroutines = "1.7.3"
-androidxTestCore = "1.5.0"
-androidxEspresso = "3.5.1"
-androidxTestRules = "1.5.0"
-androidxTestRunner = "1.5.2"
 turbine = "1.0.0"
 
 
 [libraries]
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+androidx-compose-material = { group = "androidx.compose.material", name = "material" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
-coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-kluent = { module = "org.amshove.kluent:kluent", version.ref = "kluent" }
-kluent-android = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" }
-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-stateinmerge = { group = "com.tomczyn", name = "state-in-merge", version.ref = "stateInMerge" }
-ui = { group = "androidx.compose.ui", name = "ui" }
-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-material3 = { group = "androidx.compose.material3", name = "material3" }
-detekt-rules-compose = { group = "ru.kode", name = "detekt-rules-compose", version.ref = "detektRulesCompose" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
-ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
-ktor-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
-ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
-ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
-ktor-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
-ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-androidx-compose-material = { group = "androidx.compose.material", name = "material" }
-desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
-androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+detekt-rules-compose = { group = "ru.kode", name = "detekt-rules-compose", version.ref = "detektRulesCompose" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+kluent = { module = "org.amshove.kluent:kluent", version.ref = "kluent" }
+kluent-android = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+ktor-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
+ktor-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+stateinmerge = { group = "com.tomczyn", name = "state-in-merge", version.ref = "stateInMerge" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -90,7 +88,7 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 [bundles]
 ktor = ["ktor-core", "ktor-cio", "ktor-logging", "ktor-auth", "ktor-negotiation", "ktor-serialization"]

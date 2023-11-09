@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.hilt.android)
     kotlin("kapt")
 }
 
@@ -77,39 +77,36 @@ android {
 
 dependencies {
     implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewModel)
+    implementation(libs.androidx.lifecycle.viewModel.compose)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.arrow.core)
     implementation(libs.bundles.ktor)
     implementation(libs.timber)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
     implementation(libs.stateinmerge)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.lifecycle.runtimeCompose)
-    implementation(libs.lifecycle.viewModel)
-    implementation(libs.lifecycle.viewModelCompose)
-    implementation(libs.androidx.compose.material)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
-    implementation(libs.androidx.media3.exoplayer)
-    implementation(libs.androidx.media3.ui)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     testImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(libs.androidx.test.espresso.core)
     testImplementation(libs.androidx.test.rules)
     testImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.hilt.android.testing)
     testImplementation(libs.junit4)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
@@ -117,15 +114,9 @@ dependencies {
     testImplementation(libs.kluent.android)
     testImplementation(libs.mockk)
 
-//    androidTestImplementation(libs.androidx.test.ext.junit)
-//    androidTestImplementation(libs.espresso.core)
-//    androidTestImplementation(platform(libs.compose.bom))
-//    androidTestImplementation(libs.ui.test.junit4)
-//    debugImplementation(libs.ui.tooling)
-//    debugImplementation(libs.ui.test.manifest)
+
 }
 
-// Allow references to generated code
 kapt {
     correctErrorTypes = true
 }
