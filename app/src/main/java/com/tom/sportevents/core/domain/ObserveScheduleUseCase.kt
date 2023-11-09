@@ -26,6 +26,7 @@ class ObserveScheduleUseCase @Inject constructor(
             .combine(timeManager.timeConfigurationChanged) { result, _ ->
                 sortAndFormat(result)
             }
+            .distinctUntilChanged()
     }
 
     private fun fetchDataInLoopFlow(): Flow<Result<List<ScheduleItem>>> {
@@ -48,7 +49,6 @@ class ObserveScheduleUseCase @Inject constructor(
                 delay(REFRESH_API_REQUEST_DELAY_MILLIS)
             }
         }
-            .distinctUntilChanged()
     }
 
     private fun sortAndFormat(result: Result<List<ScheduleItem>>) =
