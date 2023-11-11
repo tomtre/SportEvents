@@ -1,6 +1,7 @@
 package com.tom.sportevents.core.domain
 
-import com.tom.sportevents.core.common.time.TimeManager
+import com.tom.sportevents.core.common.time.eventsource.TimeModificationEventSource
+import com.tom.sportevents.core.common.time.formater.DateFormatter
 import com.tom.sportevents.core.data.repository.ScheduleRepository
 import com.tom.sportevents.core.model.FormattedScheduleItem
 import com.tom.sportevents.core.model.Result
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.isActive
 import java.time.LocalTime
 import javax.inject.Inject
@@ -17,13 +19,14 @@ import kotlin.coroutines.coroutineContext
 
 class ObserveScheduleUseCase @Inject constructor(
     private val scheduleRepository: ScheduleRepository,
-    private val timeManager: TimeManager
+    private val timeModificationEventSource: TimeModificationEventSource,
+    private val dateFormatter: DateFormatter
 ) : () -> Flow<Result<List<FormattedScheduleItem>>> {
 
     override fun invoke(): Flow<Result<List<FormattedScheduleItem>>> {
         return fetchDataInLoopFlow()
             // reformat model every time a time configuration has changed (e.g. phone time or time zone has been changed)
-            .combine(timeManager.timeConfigurationChanged) { result, _ ->
+            .combine(timeModificationEventSource.timeModificationEvent.onStart { emit(Unit) }) { result, _ ->
                 sortAndFormat(result)
             }
             .distinctUntilChanged()
@@ -54,18 +57,18 @@ class ObserveScheduleUseCase @Inject constructor(
     private fun sortAndFormat(result: Result<List<ScheduleItem>>) =
         when (result) {
             is Result.Success -> {
-                val tomorrowList = result.data.filterTomorrow(timeManager)
+                val tomorrowList = result.data.filterTomorrow(dateFormatter)
                 val sortedList = tomorrowList.sortedBy { it.date }
                 // format Instant to relative date as String
-                val formattedList = sortedList.map { it.toFormattedScheduleItem(timeManager) }
+                val formattedList = sortedList.map { it.toFormattedScheduleItem(dateFormatter) }
                 Result.Success(formattedList)
             }
 
             is Result.Error -> result
         }
 
-    private fun List<ScheduleItem>.filterTomorrow(timeManager: TimeManager): List<ScheduleItem> {
-        val tomorrowZoned = timeManager.currentZonedDateTime().plusDays(1)
+    private fun List<ScheduleItem>.filterTomorrow(dateFormatter: DateFormatter): List<ScheduleItem> {
+        val tomorrowZoned = dateFormatter.currentZonedDateTime().plusDays(1)
         val tomorrowStarInstant = tomorrowZoned.with(LocalTime.MIN).toInstant()
         val tomorrowEndInstant = tomorrowZoned.with(LocalTime.MAX).toInstant()
         return this.filter {
@@ -80,12 +83,12 @@ class ObserveScheduleUseCase @Inject constructor(
         }
     }
 
-    private fun ScheduleItem.toFormattedScheduleItem(timeManager: TimeManager): FormattedScheduleItem =
+    private fun ScheduleItem.toFormattedScheduleItem(dateFormatter: DateFormatter): FormattedScheduleItem =
         FormattedScheduleItem(
             id = id,
             title = title,
             subtitle = subtitle,
-            formattedDate = timeManager.formatRelativeDays(date),
+            formattedDate = dateFormatter.formatRelativeDays(date),
             imageUrl = imageUrl
         )
 

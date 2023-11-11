@@ -1,4 +1,4 @@
-package com.tom.sportevents.core.common.time
+package com.tom.sportevents.core.common.time.eventsource
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class TimeModificationsBroadcastReceiver @Inject constructor(
+class TimeModificationBroadcastReceiver @Inject constructor(
     @ApplicationContext val context: Context
 ) : BroadcastReceiver() {
 

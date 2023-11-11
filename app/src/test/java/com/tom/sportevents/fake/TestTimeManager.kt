@@ -1,8 +1,7 @@
 package com.tom.sportevents.fake
 
 import com.tom.sportevents.core.common.BehaviorFlow
-import com.tom.sportevents.core.common.MutableBehaviorFlow
-import com.tom.sportevents.core.common.time.TimeManager
+import com.tom.sportevents.core.common.MutablePublishFlow
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -13,7 +12,7 @@ class TestTimeManager(
     private val formatRelativeDays: String = "Tomorrow"
 ) : TimeManager {
 
-    private val _timeConfigurationChanged = MutableBehaviorFlow(Unit)
+    private val _timeConfigurationChanged = MutablePublishFlow(Unit)
 
     override val timeConfigurationChanged: BehaviorFlow<Unit>
         get() = _timeConfigurationChanged

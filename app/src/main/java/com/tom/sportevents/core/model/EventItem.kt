@@ -1,6 +1,6 @@
 package com.tom.sportevents.core.model
 
-import com.tom.sportevents.core.common.time.TimeManager
+import com.tom.sportevents.core.common.time.parser.DateParser
 import com.tom.sportevents.core.network.model.NetworkEventItem
 import java.time.Instant
 
@@ -13,9 +13,9 @@ class EventItem(
     val videoUrl: String
 )
 
-fun NetworkEventItem.toDomain(timeManager: TimeManager): EventItem =
+fun NetworkEventItem.toDomain(dateParser: DateParser): EventItem =
     EventItem(
-        date = timeManager.parseFromIsoInstantFormat(date),
+        date = dateParser.parseFromIsoInstantFormat(date),
         id = id,
         imageUrl = imageUrl,
         subtitle = subtitle,
@@ -23,5 +23,5 @@ fun NetworkEventItem.toDomain(timeManager: TimeManager): EventItem =
         videoUrl = videoUrl
     )
 
-fun List<NetworkEventItem>.toDomain(timeManager: TimeManager): List<EventItem> =
-    map { it.toDomain(timeManager) }
+fun List<NetworkEventItem>.toDomain(dateParser: DateParser): List<EventItem> =
+    map { it.toDomain(dateParser) }

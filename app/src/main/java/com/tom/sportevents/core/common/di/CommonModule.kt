@@ -4,8 +4,10 @@ import com.tom.sportevents.core.common.CoroutineScopeProvider
 import com.tom.sportevents.core.common.CoroutineScopeProviderImpl
 import com.tom.sportevents.core.common.DispatcherProvider
 import com.tom.sportevents.core.common.DispatcherProviderImpl
-import com.tom.sportevents.core.common.time.AtomicTimeManager
-import com.tom.sportevents.core.common.time.TimeManager
+import com.tom.sportevents.core.common.time.eventsource.TimeModificationEventSource
+import com.tom.sportevents.core.common.time.eventsource.TimeModificationEventSourceImpl
+import com.tom.sportevents.core.common.time.formater.BasicDateFormatter
+import com.tom.sportevents.core.common.time.formater.DateFormatter
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -26,5 +28,11 @@ abstract class CommonModule {
 
     @Singleton
     @Binds
-    abstract fun bindTimeManager(atomicTimeManager: AtomicTimeManager): TimeManager
+    abstract fun bindTimeModificationEventSource(
+        timeModificationEventSourceImpl: TimeModificationEventSourceImpl
+    ): TimeModificationEventSource
+
+    @Singleton
+    @Binds
+    abstract fun bindDateFormatter(basicDateFormatter: BasicDateFormatter): DateFormatter
 }
