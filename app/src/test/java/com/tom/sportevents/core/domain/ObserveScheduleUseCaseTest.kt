@@ -1,11 +1,13 @@
 package com.tom.sportevents.core.domain
 
+import app.cash.turbine.test
 import com.tom.sportevents.MainDispatcherRule
 import com.tom.sportevents.core.data.repository.ScheduleRepository
 import com.tom.sportevents.core.model.FormattedScheduleItem
 import com.tom.sportevents.core.model.Result
 import com.tom.sportevents.core.model.ScheduleItem
-import com.tom.sportevents.fake.TestTimeManager
+import com.tom.sportevents.fake.TestDateFormatter
+import com.tom.sportevents.fake.TestTimeModificationEventSource
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -37,7 +39,8 @@ class ObserveScheduleUseCaseTest {
     private val zoneId = ZoneId.of("Europe/London")
     private val baseZonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
 
-    private val timeManager = spyk(TestTimeManager(currentZonedDateTime = baseZonedDateTime))
+    private val testDateFormatter = spyk(TestDateFormatter(currentZonedDateTime = baseZonedDateTime))
+    private val testTimeModificationEventSource = TestTimeModificationEventSource()
 
     private val scheduleRepository = mockk<ScheduleRepository>()
 
@@ -45,7 +48,11 @@ class ObserveScheduleUseCaseTest {
 
     @Before
     fun setup() {
-        useCase = ObserveScheduleUseCase(scheduleRepository = scheduleRepository, timeManager = timeManager)
+        useCase = ObserveScheduleUseCase(
+            scheduleRepository = scheduleRepository,
+            timeModificationEventSource = testTimeModificationEventSource,
+            dateFormatter = testDateFormatter
+        )
     }
 
     @Test
@@ -54,7 +61,7 @@ class ObserveScheduleUseCaseTest {
 
         // emit list of 3 items
         coEvery { scheduleRepository.getSchedule() } returns Result.Success(mixedDates)
-        timeManager.setCurrentZonedDateTime(baseZonedDateTime)
+        testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime)
 
         val values = mutableListOf<Result<List<FormattedScheduleItem>>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -66,8 +73,8 @@ class ObserveScheduleUseCaseTest {
         values shouldHaveSize 1
 
         coVerify(exactly = 1) { scheduleRepository.getSchedule() }
-        coVerify(exactly = 1) { timeManager.currentZonedDateTime() }
-        coVerify(exactly = 2) { timeManager.formatRelativeDays(any()) }
+        coVerify(exactly = 1) { testDateFormatter.currentZonedDateTime() }
+        coVerify(exactly = 2) { testDateFormatter.formatRelativeDays(any()) }
     }
 
     @Test
@@ -80,7 +87,7 @@ class ObserveScheduleUseCaseTest {
             Result.Success(listOf(createScheduleItem("2", instant))) andThen
             Result.Success(listOf(createScheduleItem("3", instant)))
 
-        timeManager.setCurrentZonedDateTime(baseZonedDateTime)
+        testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime)
 
         val values = mutableListOf<Result<List<FormattedScheduleItem>>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -97,11 +104,11 @@ class ObserveScheduleUseCaseTest {
     }
 
     @Test
-    fun `rebuild model when configuration happens`() = runTest {
+    fun `rebuild model when time modification happens`() = runTest {
         val resultFlow = useCase()
 
         coEvery { scheduleRepository.getSchedule() } returns Result.Success(orderedDates)
-        timeManager.setCurrentZonedDateTime(baseZonedDateTime)
+        testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime)
 
         val values = mutableListOf<Result<List<FormattedScheduleItem>>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -111,18 +118,42 @@ class ObserveScheduleUseCaseTest {
         values shouldHaveSize 1
         (values[0] as Result.Success).data[0].id shouldBeEqualTo "1"
 
-        timeManager.setCurrentZonedDateTime(baseZonedDateTime.plusDays(1))
-        timeManager.emitConfigurationChanged()
+        testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime.plusDays(1))
+        testTimeModificationEventSource.emitTimeModificationEvent()
         values shouldHaveSize 2
         (values[1] as Result.Success).data[0].id shouldBeEqualTo "2"
 
-        timeManager.setCurrentZonedDateTime(baseZonedDateTime.plusDays(2))
-        timeManager.emitConfigurationChanged()
+        testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime.plusDays(2))
+        testTimeModificationEventSource.emitTimeModificationEvent()
         values shouldHaveSize 3
         (values[2] as Result.Success).data[0].id shouldBeEqualTo "3"
 
         coVerify(exactly = 1) { scheduleRepository.getSchedule() }
-        coVerify(exactly = 3) { timeManager.currentZonedDateTime() }
+        coVerify(exactly = 3) { testDateFormatter.currentZonedDateTime() }
+    }
+
+    // Turbine example
+    @Test
+    fun `rebuild model when time modification happens (Turbine example)`() = runTest {
+        val resultFlow = useCase()
+
+        coEvery { scheduleRepository.getSchedule() } returns Result.Success(orderedDates)
+        testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime)
+
+        resultFlow.test {
+            (awaitItem() as Result.Success).data[0].id shouldBeEqualTo "1"
+
+            testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime.plusDays(1))
+            testTimeModificationEventSource.emitTimeModificationEvent()
+            (awaitItem() as Result.Success).data[0].id shouldBeEqualTo "2"
+
+            testDateFormatter.setCurrentZonedDateTime(baseZonedDateTime.plusDays(2))
+            testTimeModificationEventSource.emitTimeModificationEvent()
+            (awaitItem() as Result.Success).data[0].id shouldBeEqualTo "3"
+        }
+
+        coVerify(exactly = 1) { scheduleRepository.getSchedule() }
+        coVerify(exactly = 3) { testDateFormatter.currentZonedDateTime() }
     }
 
     private fun createScheduleItem(id: String, instant: Instant) =
