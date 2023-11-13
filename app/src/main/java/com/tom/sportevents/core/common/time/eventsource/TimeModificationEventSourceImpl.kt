@@ -3,7 +3,6 @@ package com.tom.sportevents.core.common.time.eventsource
 import com.tom.sportevents.core.common.CoroutineScopeProvider
 import com.tom.sportevents.core.common.MutableBehaviorFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,15 +17,22 @@ class TimeModificationEventSourceImpl @Inject constructor(
     private val _localOrTimeChanged = MutableBehaviorFlow<Unit>()
     override val localOrTimeChanged: Flow<Unit> = _localOrTimeChanged
 
-    override val timeModificationEvent: Flow<Unit> = combine(_timeZoneChanged, _localOrTimeChanged) { _, _ -> Unit }
+    private val _timeModificationEvent = MutableBehaviorFlow<Unit>()
+    override val timeModificationEvent: Flow<Unit> = _timeModificationEvent
 
     init {
         timeModificationBroadcastReceiver.register(
             onTimeZoneChanged = {
-                coroutineScopeProvider.applicationScope.launch { _timeZoneChanged.emit(Unit) }
+                coroutineScopeProvider.applicationScope.launch {
+                    _timeZoneChanged.emit(Unit)
+                    _timeModificationEvent.emit(Unit)
+                }
             },
             onLocalAndTimeSetChanged = {
-                coroutineScopeProvider.applicationScope.launch { _localOrTimeChanged.emit(Unit) }
+                coroutineScopeProvider.applicationScope.launch {
+                    _localOrTimeChanged.emit(Unit)
+                    _timeModificationEvent.emit(Unit)
+                }
             }
         )
     }
